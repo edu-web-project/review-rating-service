@@ -1,18 +1,17 @@
-import pyodbc  # thư viện kết nối SQL Server qua ODBC
+import os
+import pyodbc
 
-# Thông tin kết nối
-server = 'ADMIN-PC'                # hoặc tên server SQL
-database = 'progress_service'      # tên database
-username = 'thaian'                # user SQL Server
-password = '080324'                # mật khẩu
-
-# Hàm trả về connection
 def get_connection():
-    connection_string = (
+    server = os.getenv("DB_SERVER", "localhost")
+    database = os.getenv("DB_NAME", "ProgressService")
+    username = os.getenv("DB_USER", "sa")
+    password = os.getenv("DB_PASSWORD", "YourStrong(!)Password")
+
+    conn = pyodbc.connect(
         f"DRIVER={{ODBC Driver 17 for SQL Server}};"
         f"SERVER={server};"
         f"DATABASE={database};"
         f"UID={username};"
         f"PWD={password};"
     )
-    return pyodbc.connect(connection_string)
+    return conn
